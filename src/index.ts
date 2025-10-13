@@ -12,12 +12,25 @@
  */
 
 const createPac = () => `function FindProxyForURL(url, host) {
+  const ranges24 = [
+    "162.159.193.0",
+	"162.159.197.0"
+  ];
+
+  if (ranges24.some(h => isInNet(dnsResolve(host), h, "255.255.255.0"))) {
+    return "DIRECT";
+  }
+  
   const hosts = [
-    "*.cloudflare.com",
+    //"*.cloudflare.com",
     "*.cloudflareclient.com",
 	"*.cloudflare-dns.com",
-	"www.google.com",
-	"*.cfeteit.net"
+	//"www.google.com",
+	//"*.cfeteit.net",
+	"*.cloudflareportal.com",
+	"*.connectivitycheck.gstatic.com",
+	"*.cloudflareok.com",
+	"*.cloudflarecp.com"
   ];
   return hosts.every(h => shExpMatch(host, h)) ? "DIRECT" : "PROXY 0.0.0.0:0";
 `
