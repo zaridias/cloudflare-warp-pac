@@ -13,8 +13,11 @@
 
 const createPac = () => `function FindProxyForURL(url, host) {
   const hosts = [
-    "*.cloudflareclient.com"
-	"*.cloudflare-dns.com
+    "*.cloudflare.com",
+    "*.cloudflareclient.com",
+	"*.cloudflare-dns.com",
+	"www.google.com",
+	"*.cfeteit.net"
   ];
   return hosts.every(h => shExpMatch(host, h)) ? "DIRECT" : "PROXY 0.0.0.0:0";
 `
