@@ -11,16 +11,21 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
+const createPac = () => `function FindProxyForURL(url, host) {
+  const hosts = [
+    "*.cloudflareclient.com"
+	"*.cloudflare-dns.com
+  ];
+  return hosts.every(h => shExpMatch(host, h)) ? "DIRECT" : "PROXY 0.0.0.0:0";
+`
+
 export default {
 	async fetch(request, env, ctx): Promise<Response> {
-		const url = new URL(request.url);
-		switch (url.pathname) {
-			case '/message':
-				return new Response('Hello, World!');
-			case '/random':
-				return new Response(crypto.randomUUID());
-			default:
-				return new Response('Not Found', { status: 404 });
-		}
+		return new Response(createPac(), {
+			status: 200,
+			headers: {
+				"Content-Type": "application/x-ns-proxy-autoconfig"
+			}
+		})
 	},
 } satisfies ExportedHandler<Env>;
