@@ -12,6 +12,8 @@
  */
 
 const createPac = () => `function FindProxyForURL(url, host) {
+  if (true) return "PROXY 127.0.0.1:5627"
+
   const ranges24 = [
     "162.159.193.0",
 	"162.159.197.0"
