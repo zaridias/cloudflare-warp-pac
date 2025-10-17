@@ -11,8 +11,8 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
-const createPac = () => `function FindProxyForURL(url, host) {
-  if (true) return "PROXY 127.0.0.1:5627"
+const createPac = (port: number) => `function FindProxyForURL(url, host) {
+  if (true) return "PROXY 127.0.0.1${port}"
 
   const ranges24 = [
     "162.159.193.0",
@@ -39,7 +39,8 @@ const createPac = () => `function FindProxyForURL(url, host) {
 
 export default {
 	async fetch(request, env, ctx): Promise<Response> {
-		return new Response(createPac(), {
+		const port = request.url.split("/")[1]
+		return new Response(createPac(port), {
 			status: 200,
 			headers: {
 				"Content-Type": "application/x-ns-proxy-autoconfig"
